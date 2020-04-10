@@ -18,6 +18,12 @@ python CompressData.py decompress --input "inputdata.dat" --output "outputtext.t
 ##### To Print:
 python CompressData.py read --input "inputdata.dat" 
 
+#### Assumptions:
+- Timestamps are positive and increasing 
+- Values are positive (though negatives should work --> currently untested) 
+- Lists are equal length
+- All inputs are ints and not None
+
 -------------------------------------
 
 ### Code Flow: 
@@ -31,7 +37,7 @@ Binary Data --> Decode Variable Length Bit Encoding --> RLE Decoder --> Delta De
 -------------------------------------
 
 ### Comments: 
-- Encoder and Decoder classes take in lists of ints independent from Compression class, so it's fairly easy to convert to a any-width int list compressor
+- Encoder and Decoder classes are slightly dependent on the problem input (removing negatives from values), but it's still fairly easy to convert to a any-width int list compressor if you wanted
 
 - Tests are located at the bottom of the Compression file for ease of access and testing within pycharm 
 
