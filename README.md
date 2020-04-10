@@ -48,7 +48,7 @@ Binary Data --> Decode Variable Length Bit Encoding --> RLE Decoder --> Delta De
   - Add minimum to each element in the array inline, and append minimum to the front for storage
 
 #### Run Length Encoder: 
-- **[<Length>, <Value>] for Run > 1, [<Value>] for Run = 1**
+- **<Length>, <Value> for Run > 1, <Value> for Run = 1**
 - **Run Lengths limited to 28 (values 100-127) for byte length efficiency**
   - Any values between 100-127, encode as [<Length> <Value>]
   - Length in storage = Run Length + 100 for ID purposes
