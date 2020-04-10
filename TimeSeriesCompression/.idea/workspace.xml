@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7c68f8cc-22ff-46ec-acbe-08e13bf23a3a" name="Default Changelist" comment="" />
+    <list default="true" id="7c68f8cc-22ff-46ec-acbe-08e13bf23a3a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/TimeSeriesCompression.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/TimeSeriesCompression.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Compression.py" beforeDir="false" afterPath="$PROJECT_DIR$/Compression.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testFile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/testFile.dat" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,9 +22,15 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="1aJp8rrbKoif5NsZjm9aDrgo61o" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Inputs" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -36,8 +49,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests for Compression.IntegrationTests.test_encode_and_decode">
-    <configuration name="Unittests for Compression.IntegrationTests.test_encode_and_decode" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.Unittests for Compression.IntegrationTests.test_compress_read">
+    <configuration name="Unittests for Compression.IntegrationTests.test_compress" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="TimeSeriesCompression" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -47,11 +60,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;Compression.IntegrationTests.test_encode_and_decode&quot;" />
+      <option name="_new_target" value="&quot;Compression.IntegrationTests.test_compress&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for Compression.IntegrationTests.test_write_and_read" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for Compression.IntegrationTests.test_compress_read" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="TimeSeriesCompression" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -61,11 +74,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;Compression.IntegrationTests.test_write_and_read&quot;" />
+      <option name="_new_target" value="&quot;Compression.IntegrationTests.test_compress_read&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for Compression.TestRunLengthEncoder" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for Compression.IntegrationTests.test_compress_write" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="TimeSeriesCompression" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -75,11 +88,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;Compression.TestRunLengthEncoder&quot;" />
+      <option name="_new_target" value="&quot;Compression.IntegrationTests.test_compress_write&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for Compression.TestRunLengthEncoder.test_encode_to_array" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for Compression.TestDeltaMethods" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="TimeSeriesCompression" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -89,11 +102,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;Compression.TestRunLengthEncoder.test_encode_to_array&quot;" />
+      <option name="_new_target" value="&quot;Compression.TestDeltaMethods&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for Compression.TestRunLengthEncoder.test_variable_length_encoder" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests in Compression.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="TimeSeriesCompression" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -103,17 +116,17 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;Compression.TestRunLengthEncoder.test_variable_length_encoder&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/Compression.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Unittests for Compression.IntegrationTests.test_encode_and_decode" />
-        <item itemvalue="Python tests.Unittests for Compression.IntegrationTests.test_write_and_read" />
-        <item itemvalue="Python tests.Unittests for Compression.TestRunLengthEncoder" />
-        <item itemvalue="Python tests.Unittests for Compression.TestRunLengthEncoder.test_variable_length_encoder" />
-        <item itemvalue="Python tests.Unittests for Compression.TestRunLengthEncoder.test_encode_to_array" />
+        <item itemvalue="Python tests.Unittests for Compression.IntegrationTests.test_compress_read" />
+        <item itemvalue="Python tests.Unittests for Compression.IntegrationTests.test_compress_write" />
+        <item itemvalue="Python tests.Unittests for Compression.IntegrationTests.test_compress" />
+        <item itemvalue="Python tests.Unittests in Compression.py" />
+        <item itemvalue="Python tests.Unittests for Compression.TestDeltaMethods" />
       </list>
     </recent_temporary>
   </component>
@@ -130,18 +143,29 @@
     </task>
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Compression.py</url>
-          <line>175</line>
-          <option name="timeStamp" value="20" />
+          <line>23</line>
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Compression.py</url>
-          <line>156</line>
-          <option name="timeStamp" value="21" />
+          <line>10</line>
+          <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

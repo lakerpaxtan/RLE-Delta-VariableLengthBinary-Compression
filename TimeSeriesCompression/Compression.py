@@ -1,4 +1,65 @@
 import unittest
+import os
+
+class Compression:
+
+    @staticmethod
+    def compressAndWrite(input, output):
+        deltaConvert = DeltaConversion(input)
+        deltaConvert.convert_lists()
+
+        rleTime = RunLengthEncoder(deltaConvert.timestampList)
+        rleValue = RunLengthEncoder(deltaConvert.valueList)
+
+        rleTime.writeToFile(output)
+        f = open(output, "ab")
+        byteArr = bytearray([0,0,0]) #  My algo can't have three zeroes in a row --> using to denote change in array
+        f.write(byteArr)
+        f.close()
+        rleValue.writeToFile(output)
+
+    @staticmethod
+    def decompressAndWrite(input, output):
+
+        with open(input, "rb") as f:
+            byteArr = bytearray(f.read())
+            intArr = [int(x) for x in byteArr]
+
+        zeroCount = 0
+        splitIndex = None
+        for i, num in enumerate(intArr):
+            if num == 0:
+                zeroCount +=1
+
+            if zeroCount == 3:
+                splitIndex = i
+                break
+
+        timestampArr = intArr[0:i-2]
+        valueArr = intArr[i+1:]
+
+        rldTime = RunLengthDecoder(input, timestampArr)
+        rldVal = RunLengthDecoder(input, valueArr)
+        rldTime.decodeInputToArray()
+        rldVal.decodeInputToArray()
+
+        deltaD = DeltaDeconversion(rldTime.decoded, rldVal.decoded)
+        deltaD.deconvert_lists()
+
+        for i in range(len(deltaD.valueListPost)):
+            print(deltaD.timestampListPost[i], deltaD.valueListPost[i])
+
+
+
+
+
+
+
+
+
+
+
+
 
 class DeltaConversion:
 
@@ -19,17 +80,28 @@ class DeltaConversion:
                 self.timestampList.append(int(splitList[0]))  # append timestamp
 
     def convert_lists(self):
-        self.firstTimestamp = self.timestampList[0]
+        if not self.timestampList or not self.valueList:
+            self.create_lists()
+
+        self.firstTimestamp = self.timestampList.pop(0)
         previousTimestamp = self.firstTimestamp
         for i, timestamp in enumerate(self.timestampList):
             self.timestampList[i] = timestamp - previousTimestamp
             previousTimestamp = timestamp
+        self.timestampList = [self.firstTimestamp] + self.timestampList
 
-        self.firstValue = self.valueList[0]
+        self.firstValue = self.valueList.pop(0)
         previousValue = self.firstValue
         for i , value in enumerate(self.valueList):
             self.valueList[i] = value - previousValue
             previousValue = value
+        self.valueList = [self.firstValue] + self.valueList
+
+        # Getting rid of those pesky negatives (value list only)
+        minValue = min(self.valueList)
+
+        self.valueList = [abs(minValue)] + [x - minValue for x in self.valueList]
+
 
 
     def convert(self):
@@ -39,22 +111,37 @@ class DeltaConversion:
 #  Deconversion is totally a real word
 class DeltaDeconversion:
 
-    def __init__(self, filename, timestampList):
-        self.fileName = filename
+    def __init__(self, timestampList, valueList):
+
         self.timestampListPre = timestampList
-        self.valueList = []
+        self.valueListPre = valueList
 
         self.timestampListPost = []
         self.valueListPost = []
 
     def deconvert_lists(self):
-        firstTimestamp = self.timestampList[0]
+        firstTimestamp = self.timestampListPre[0]
         self.timestampListPre.pop(0)
         self.timestampListPost.append(firstTimestamp)
 
         previousTimestamp = firstTimestamp
         for i, timestamp in enumerate(self.timestampListPre):
             self.timestampListPost.append(previousTimestamp + timestamp)
+            previousTimestamp = previousTimestamp + timestamp
+
+        minValue = self.valueListPre.pop(0)
+
+        self.valueListPre = [x - minValue for x in self.valueListPre]
+
+        firstValue = self.valueListPre[0]
+        self.valueListPre.pop(0)
+        self.valueListPost.append(firstValue)
+
+        previousValue = firstValue
+        for i, value in enumerate(self.valueListPre):
+            self.valueListPost.append(previousValue + value)
+            previousValue = previousValue + value
+
 
 
 
@@ -132,24 +219,27 @@ class RunLengthEncoder:
 
 class RunLengthDecoder:
 
-    def __init__(self, input):
+    def __init__(self, input, arr = []):
         self.filename = input
-        self.nonbinaryArray = []
+        self.nonbinaryArray = arr
         self.decoded = []
 
 
     def getNextNum(self):
         finalNum = 0
         currNum = self.nonbinaryArray.pop(0)
+
         if currNum < 128:
             return currNum
 
+        currBit = 0
         while (currNum >> 7) == 1:
             last7bits = currNum & 127
-            finalNum = (finalNum << 7) | last7bits
+            finalNum = (last7bits << currBit) | finalNum
+            currBit += 7
             currNum = self.nonbinaryArray.pop(0)
 
-        finalNum = (currNum << 7) | finalNum
+        finalNum = (currNum << currBit) | finalNum
         return finalNum
 
 
@@ -181,28 +271,48 @@ class RunLengthDecoder:
 class IntegrationTests(unittest.TestCase):
 
     def test_write_to_file(self):
-        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/TimeSeriesCompression/Inputs/easy.txt")
+        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt")
         deltaObject.convert()
         RLE = RunLengthEncoder(deltaObject.timestampList)
         RLE.writeToFile("testFile.dat")
+        if os.path.exists("testFile.dat"):
+            os.remove("testFile.dat")
 
     def test_write_and_read(self):
-        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/TimeSeriesCompression/Inputs/easy.txt")
+        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt")
         deltaObject.convert()
         RLE = RunLengthEncoder(deltaObject.timestampList)
         RLE.writeToFile("testFile.dat")
         RLD = RunLengthDecoder("testFile.dat")
         RLD.writeToArray()
         self.assertEqual(RLE.nonbinaryArray, RLD.nonbinaryArray)
+        if os.path.exists("testFile.dat"):
+            os.remove("testFile.dat")
 
     def test_encode_and_decode(self):
-        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/TimeSeriesCompression/Inputs/easy.txt")
+        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt")
         deltaObject.convert()
         RLE = RunLengthEncoder(deltaObject.timestampList)
         RLE.writeToFile("testFile.dat")
         RLD = RunLengthDecoder("testFile.dat")
         RLD.decodeInputToArray()
         self.assertEqual(RLE.unencoded, RLD.decoded)
+        if os.path.exists("testFile.dat"):
+            os.remove("testFile.dat")
+
+    def test_compress(self):
+        Compression.compressAndWrite("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt", "testFile.dat")
+        Compression.decompressAndWrite("testFile.dat", "whocares.txt")
+        if os.path.exists("testFile.dat"):
+            os.remove("testFile.dat")
+
+    # def test_compress_write(self):
+    #     Compression.compressAndWrite("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt", "testFile.dat")
+    #
+    # 
+    # def test_compress_read(self):
+    #     Compression.decompressAndWrite("testFile.dat", "whocares.txt")
+
 
 
 class TestRunLengthEncoder(unittest.TestCase):
@@ -221,35 +331,32 @@ class TestRunLengthEncoder(unittest.TestCase):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class TestDeltaMethods(unittest.TestCase):
 
     def test_create_list(self):
-        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/TimeSeriesCompression/Inputs/unittest.txt")
+        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/unittest.txt")
         deltaObject.create_lists()
         self.assertEqual(deltaObject.timestampList, [1387909800, 1387909822, 1387909844])
         self.assertEqual(deltaObject.valueList, [120,173,93])
 
     def test_convert(self):
-        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/TimeSeriesCompression/Inputs/unittest.txt")
+        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/unittest.txt")
         deltaObject.convert()
-        self.assertEqual(deltaObject.timestampList, [0, 22, 22])
-        self.assertEqual(deltaObject.valueList, [0, 53, -80])
+        self.assertEqual(deltaObject.timestampList, [1387909800, 22, 22])
+        self.assertEqual(deltaObject.valueList, [120, 53, -80])
+
+    def test_convert2(self):
+        deltaObject = DeltaConversion(
+            "C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt")
+        deltaObject.convert()
+        self.assertEqual([1387909800, 22, 22, 34, 21, 11, 12, 10, 9868, 22, 22, 34, 21, 11, 12, 10, 9868, 22, 22, 34, 21, 11, 12, 10], deltaObject.timestampList)
+
+    def test_deconvert(self):
+        deltaObject = DeltaDeconversion("not needed", [1387909800, 22, 22, 34, 21, 11, 12, 10, 9868, 22, 22, 34, 21, 11, 12, 10, 9868, 22, 22, 34, 21, 11, 12, 10])
+        deltaObject.deconvert_lists()
+        self.assertEqual( [1387909800,1387909822,1387909844,1387909878,1387909899,1387909910,1387909922,1387909932,
+                          1387919800,1387919822,1387919844,1387919878,1387919899,1387919910,1387919922,1387919932,
+                          1387929800,1387929822,1387929844,1387929878,1387929899,1387929910,1387929922,1387929932], deltaObject.timestampListPost)
 
 
 
