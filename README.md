@@ -11,7 +11,7 @@ timestamp1 (int), value1 (int) \n
 timestamp2 (int), value2 (int) \n
 timestamp3 (int), value3 (int) \n
 ......
-##### To compress:
+##### To Compress:
 python CompressData.py compress --input "inputfile.txt" --output "outputData.dat"
 ##### To Decompress:
 python CompressData.py decompress --input "inputdata.dat" --output "outputtext.txt"
