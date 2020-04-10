@@ -1,6 +1,7 @@
 import unittest
 import os
 
+
 class Compression:
 
     @staticmethod
@@ -13,7 +14,7 @@ class Compression:
 
         rleTime.writeToFile(output)
         f = open(output, "ab")
-        byteArr = bytearray([0,0,0]) #  My algo can't have three zeroes in a row --> using to denote change in array
+        byteArr = bytearray([0, 0, 0])  # My algo can't have three zeroes in a row --> using to denote change in array
         f.write(byteArr)
         f.close()
         rleValue.writeToFile(output)
@@ -29,14 +30,14 @@ class Compression:
         splitIndex = None
         for i, num in enumerate(intArr):
             if num == 0:
-                zeroCount +=1
+                zeroCount += 1
 
             if zeroCount == 3:
                 splitIndex = i
                 break
 
-        timestampArr = intArr[0:i-2]
-        valueArr = intArr[i+1:]
+        timestampArr = intArr[0:i - 2]
+        valueArr = intArr[i + 1:]
 
         rldTime = RunLengthDecoder(input, timestampArr)
         rldVal = RunLengthDecoder(input, valueArr)
@@ -46,19 +47,9 @@ class Compression:
         deltaD = DeltaDeconversion(rldTime.decoded, rldVal.decoded)
         deltaD.deconvert_lists()
 
-        for i in range(len(deltaD.valueListPost)):
-            print(deltaD.timestampListPost[i], deltaD.valueListPost[i])
-
-
-
-
-
-
-
-
-
-
-
+        with open(output, 'w') as f:
+            for i in range(len(deltaD.valueListPost)):
+                f.write("{}, {}\n".format(deltaD.timestampListPost[i], deltaD.valueListPost[i]))
 
 
 class DeltaConversion:
@@ -74,7 +65,7 @@ class DeltaConversion:
         with open(self.fileName) as tempFile:
             for line in tempFile:
                 tempLine = line.rstrip()  # strip newline from line
-                tempLine = tempLine[:-1]   # remove final char (comma)
+                # tempLine = tempLine[:-1]   # remove final char (comma)
                 splitList = tempLine.rsplit(", ")  # remove trailing whitespace and split
                 self.valueList.append(int(splitList[1]))  # append value
                 self.timestampList.append(int(splitList[0]))  # append timestamp
@@ -92,21 +83,22 @@ class DeltaConversion:
 
         self.firstValue = self.valueList.pop(0)
         previousValue = self.firstValue
-        for i , value in enumerate(self.valueList):
+        for i, value in enumerate(self.valueList):
             self.valueList[i] = value - previousValue
             previousValue = value
         self.valueList = [self.firstValue] + self.valueList
 
         # Getting rid of those pesky negatives (value list only)
         minValue = min(self.valueList)
+        if minValue > 0:
+            minValue = 0
 
         self.valueList = [abs(minValue)] + [x - minValue for x in self.valueList]
-
-
 
     def convert(self):
         self.create_lists()
         self.convert_lists()
+
 
 #  Deconversion is totally a real word
 class DeltaDeconversion:
@@ -143,11 +135,6 @@ class DeltaDeconversion:
             previousValue = previousValue + value
 
 
-
-
-
-
-
 class RunLengthEncoder:
 
     def __init__(self, input):
@@ -167,8 +154,6 @@ class RunLengthEncoder:
 
         numList.append(currNum)
         return numList
-
-
 
     def inputNumber(self, number):
 
@@ -190,13 +175,13 @@ class RunLengthEncoder:
             runNum = self.unencoded[i]
             currNum = runNum
             runLen = 1
-            i+=1
+            i += 1
             while i < len(self.unencoded) and runLen < 27:
                 currNum = self.unencoded[i]
                 if currNum != runNum:
                     break
-                i+=1
-                runLen+=1
+                i += 1
+                runLen += 1
 
             if runLen == 1 and (runNum < 100 or runNum > 127):
                 self.inputNumber(runNum)
@@ -204,8 +189,6 @@ class RunLengthEncoder:
             else:
                 self.inputNumber(runLen + 100)
                 self.inputNumber(runNum)
-
-
 
     def writeToFile(self, name):
         if not self.nonbinaryArray:
@@ -219,11 +202,10 @@ class RunLengthEncoder:
 
 class RunLengthDecoder:
 
-    def __init__(self, input, arr = []):
+    def __init__(self, input, arr=[]):
         self.filename = input
         self.nonbinaryArray = arr
         self.decoded = []
-
 
     def getNextNum(self):
         finalNum = 0
@@ -242,7 +224,6 @@ class RunLengthDecoder:
         finalNum = (currNum << currBit) | finalNum
         return finalNum
 
-
     def decodeInputToArray(self):
         if not self.nonbinaryArray:
             self.writeToArray()
@@ -259,19 +240,19 @@ class RunLengthDecoder:
             else:
                 self.decoded.append(currNum)
 
-
-
     def writeToArray(self):
         with open(self.filename, "rb") as f:
             byteArr = bytearray(f.read())
             self.nonbinaryArray = [int(x) for x in byteArr]
 
 
+# =================================TESTING==================================================
 
 class IntegrationTests(unittest.TestCase):
 
     def test_write_to_file(self):
-        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt")
+        deltaObject = DeltaConversion(
+            "C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt")
         deltaObject.convert()
         RLE = RunLengthEncoder(deltaObject.timestampList)
         RLE.writeToFile("testFile.dat")
@@ -279,7 +260,8 @@ class IntegrationTests(unittest.TestCase):
             os.remove("testFile.dat")
 
     def test_write_and_read(self):
-        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt")
+        deltaObject = DeltaConversion(
+            "C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt")
         deltaObject.convert()
         RLE = RunLengthEncoder(deltaObject.timestampList)
         RLE.writeToFile("testFile.dat")
@@ -290,7 +272,19 @@ class IntegrationTests(unittest.TestCase):
             os.remove("testFile.dat")
 
     def test_encode_and_decode(self):
-        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt")
+        deltaObject = DeltaConversion(
+            "C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/long.txt")
+        deltaObject.convert()
+        RLE = RunLengthEncoder(deltaObject.valueList)
+        RLE.writeToFile("testFile.dat")
+        RLD = RunLengthDecoder("testFile.dat")
+        RLD.decodeInputToArray()
+        self.assertEqual(RLE.unencoded, RLD.decoded)
+        if os.path.exists("testFile.dat"):
+            os.remove("testFile.dat")
+
+        deltaObject = DeltaConversion(
+            "C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/long.txt")
         deltaObject.convert()
         RLE = RunLengthEncoder(deltaObject.timestampList)
         RLE.writeToFile("testFile.dat")
@@ -301,64 +295,67 @@ class IntegrationTests(unittest.TestCase):
             os.remove("testFile.dat")
 
     def test_compress(self):
-        Compression.compressAndWrite("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt", "testFile.dat")
+        Compression.compressAndWrite(
+            "C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt",
+            "testFile.dat")
         Compression.decompressAndWrite("testFile.dat", "whocares.txt")
         if os.path.exists("testFile.dat"):
             os.remove("testFile.dat")
 
     # def test_compress_write(self):
-    #     Compression.compressAndWrite("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt", "testFile.dat")
+    #     Compression.compressAndWrite("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/long.txt", "testFile.dat")
     #
-    # 
+    #
     # def test_compress_read(self):
     #     Compression.decompressAndWrite("testFile.dat", "whocares.txt")
-
 
 
 class TestRunLengthEncoder(unittest.TestCase):
 
     def test_encode_to_array(self):
-        RLE = RunLengthEncoder([3,3,3,3,5,5,110,110,110,120,3,5,9,9,9])
+        RLE = RunLengthEncoder([3, 3, 3, 3, 5, 5, 110, 110, 110, 120, 3, 5, 9, 9, 9])
         RLE.encodeInputToArray()
-        self.assertEqual([104, 3, 102, 5, 103, 110, 101,120, 3, 5, 103, 9], RLE.nonbinaryArray)
-
-
+        self.assertEqual([104, 3, 102, 5, 103, 110, 101, 120, 3, 5, 103, 9], RLE.nonbinaryArray)
 
     def test_variable_length_encoder(self):
         self.assertEqual([229, 9], RunLengthEncoder.variableLengthEncoding(1253))
-        self.assertEqual([181,181,211,181,9], RunLengthEncoder.variableLengthEncoding(2528434869))
-
-
+        self.assertEqual([181, 181, 211, 181, 9], RunLengthEncoder.variableLengthEncoding(2528434869))
 
 
 class TestDeltaMethods(unittest.TestCase):
 
     def test_create_list(self):
-        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/unittest.txt")
+        deltaObject = DeltaConversion(
+            "C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/unittest.txt")
         deltaObject.create_lists()
         self.assertEqual(deltaObject.timestampList, [1387909800, 1387909822, 1387909844])
-        self.assertEqual(deltaObject.valueList, [120,173,93])
+        self.assertEqual(deltaObject.valueList, [120, 173, 93])
 
     def test_convert(self):
-        deltaObject = DeltaConversion("C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/unittest.txt")
+        deltaObject = DeltaConversion(
+            "C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/unittest.txt")
         deltaObject.convert()
         self.assertEqual(deltaObject.timestampList, [1387909800, 22, 22])
-        self.assertEqual(deltaObject.valueList, [120, 53, -80])
+        self.assertEqual(deltaObject.valueList, [80, 200, 133, 0])
 
     def test_convert2(self):
         deltaObject = DeltaConversion(
             "C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/easy.txt")
         deltaObject.convert()
-        self.assertEqual([1387909800, 22, 22, 34, 21, 11, 12, 10, 9868, 22, 22, 34, 21, 11, 12, 10, 9868, 22, 22, 34, 21, 11, 12, 10], deltaObject.timestampList)
+        self.assertEqual(
+            [1387909800, 22, 22, 34, 21, 11, 12, 10, 9868, 22, 22, 34, 21, 11, 12, 10, 9868, 22, 22, 34, 21, 11, 12,
+             10], deltaObject.timestampList)
 
     def test_deconvert(self):
-        deltaObject = DeltaDeconversion("not needed", [1387909800, 22, 22, 34, 21, 11, 12, 10, 9868, 22, 22, 34, 21, 11, 12, 10, 9868, 22, 22, 34, 21, 11, 12, 10])
+        deltaObject = DeltaDeconversion(
+            [1387909800, 22, 22, 34, 21, 11, 12, 10, 9868, 22, 22, 34, 21, 11, 12, 10, 9868, 22, 22, 34, 21, 11, 12,
+             10], [0, 0, 1, 1])
         deltaObject.deconvert_lists()
-        self.assertEqual( [1387909800,1387909822,1387909844,1387909878,1387909899,1387909910,1387909922,1387909932,
-                          1387919800,1387919822,1387919844,1387919878,1387919899,1387919910,1387919922,1387919932,
-                          1387929800,1387929822,1387929844,1387929878,1387929899,1387929910,1387929922,1387929932], deltaObject.timestampListPost)
-
-
+        self.assertEqual(
+            [1387909800, 1387909822, 1387909844, 1387909878, 1387909899, 1387909910, 1387909922, 1387909932,
+             1387919800, 1387919822, 1387919844, 1387919878, 1387919899, 1387919910, 1387919922, 1387919932,
+             1387929800, 1387929822, 1387929844, 1387929878, 1387929899, 1387929910, 1387929922, 1387929932],
+            deltaObject.timestampListPost)
 
 
 if __name__ == '__main__':

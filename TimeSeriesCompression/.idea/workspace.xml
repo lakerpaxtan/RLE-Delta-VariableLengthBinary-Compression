@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7c68f8cc-22ff-46ec-acbe-08e13bf23a3a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/TimeSeriesCompression.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/TimeSeriesCompression.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CompressData.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Compression.py" beforeDir="false" afterPath="$PROJECT_DIR$/Compression.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testFile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/testFile.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Inputs/easy.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Inputs/easy.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Inputs/unittest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Inputs/unittest.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -50,7 +49,7 @@
     </option>
   </component>
   <component name="RunManager" selected="Python tests.Unittests for Compression.IntegrationTests.test_compress_read">
-    <configuration name="Unittests for Compression.IntegrationTests.test_compress" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for Compression.IntegrationTests" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="TimeSeriesCompression" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -60,7 +59,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;Compression.IntegrationTests.test_compress&quot;" />
+      <option name="_new_target" value="&quot;Compression.IntegrationTests&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -92,7 +91,7 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for Compression.TestDeltaMethods" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for Compression.TestDeltaMethods.test_deconvert" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="TimeSeriesCompression" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -102,7 +101,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;Compression.TestDeltaMethods&quot;" />
+      <option name="_new_target" value="&quot;Compression.TestDeltaMethods.test_deconvert&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -124,9 +123,9 @@
       <list>
         <item itemvalue="Python tests.Unittests for Compression.IntegrationTests.test_compress_read" />
         <item itemvalue="Python tests.Unittests for Compression.IntegrationTests.test_compress_write" />
-        <item itemvalue="Python tests.Unittests for Compression.IntegrationTests.test_compress" />
         <item itemvalue="Python tests.Unittests in Compression.py" />
-        <item itemvalue="Python tests.Unittests for Compression.TestDeltaMethods" />
+        <item itemvalue="Python tests.Unittests for Compression.IntegrationTests" />
+        <item itemvalue="Python tests.Unittests for Compression.TestDeltaMethods.test_deconvert" />
       </list>
     </recent_temporary>
   </component>
@@ -148,26 +147,12 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Compression.py</url>
-          <line>23</line>
-          <option name="timeStamp" value="31" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Compression.py</url>
-          <line>10</line>
-          <option name="timeStamp" value="32" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
