@@ -11,12 +11,18 @@ timestamp1 (int), value1 (int) \n
 timestamp2 (int), value2 (int) \n
 timestamp3 (int), value3 (int) \n
 ......
-##### To compress:
+##### To Compress:
 python CompressData.py compress --input "inputfile.txt" --output "outputData.dat"
 ##### To Decompress:
 python CompressData.py decompress --input "inputdata.dat" --output "outputtext.txt"
 ##### To Print:
 python CompressData.py read --input "inputdata.dat" 
+
+#### Assumptions:
+- Timestamps are positive and increasing 
+- Values are positive (though negatives should work --> currently untested) 
+- Lists are equal length
+- All inputs are ints and not None
 
 -------------------------------------
 
@@ -31,7 +37,7 @@ Binary Data --> Decode Variable Length Bit Encoding --> RLE Decoder --> Delta De
 -------------------------------------
 
 ### Comments: 
-- Encoder and Decoder classes take in lists of ints independent from Compression class, so it's fairly easy to convert to a any-width int list compressor
+- Encoder and Decoder classes are slightly dependent on the problem input (removing negatives from values), but it's still fairly easy to convert to a any-width int list compressor if you wanted
 
 - Tests are located at the bottom of the Compression file for ease of access and testing within pycharm 
 
