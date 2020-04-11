@@ -1,5 +1,6 @@
 import unittest
 import os
+import filecmp
 
 
 class Compression:
@@ -324,9 +325,9 @@ class IntegrationTests(unittest.TestCase):
         if os.path.exists("testFile.dat"):
             os.remove("testFile.dat")
 
-    def test_full(self):
-        Compression.compress_and_write("Inputs/randomGenerated.txt", "randomGen.dat")
-        Compression.decompress_and_write("randomGen.dat", "writeHere.txt")
+    # def test_full(self):
+    #     Compression.compress_and_write("Inputs/randomGenerated.txt", "randomGen.dat")
+    #     Compression.decompress_and_write("randomGen.dat", "writeHere.txt")
 
 
 class TestRunLengthEncoder(unittest.TestCase):
@@ -375,6 +376,59 @@ class TestDeltaMethods(unittest.TestCase):
              1387919800, 1387919822, 1387919844, 1387919878, 1387919899, 1387919910, 1387919922, 1387919932,
              1387929800, 1387929822, 1387929844, 1387929878, 1387929899, 1387929910, 1387929922, 1387929932],
             deltaObject.timestampList)
+
+
+class TestFullFiles(unittest.TestCase):
+    def test_easy(self):
+        input = "Inputs/easy.txt"
+        Compression.compress_and_write(input, "randomGen.dat")
+        Compression.decompress_and_write("randomGen.dat", "check.txt")
+        self.assertTrue(filecmp.cmp(input, "check.txt"))
+        if os.path.exists("randomGen.dat"):
+            os.remove("randomGen.dat")
+        if os.path.exists("check.txt"):
+            os.remove("check.txt")
+
+    def test_long(self):
+        input = "Inputs/long.txt"
+        Compression.compress_and_write(input, "randomGen.dat")
+        Compression.decompress_and_write("randomGen.dat", "check.txt")
+        self.assertTrue(filecmp.cmp(input, "check.txt"))
+        if os.path.exists("randomGen.dat"):
+            os.remove("randomGen.dat")
+        if os.path.exists("check.txt"):
+            os.remove("check.txt")
+
+    def test_increasing(self):
+        input = "Inputs/onlyIncreasingValues.txt"
+        Compression.compress_and_write(input, "randomGen.dat")
+        Compression.decompress_and_write("randomGen.dat", "check.txt")
+        self.assertTrue(filecmp.cmp(input, "check.txt"))
+        if os.path.exists("randomGen.dat"):
+            os.remove("randomGen.dat")
+        if os.path.exists("check.txt"):
+            os.remove("check.txt")
+
+    def test_quick_negative(self):
+        input = "Inputs/quickNegativeValues.txt"
+        Compression.compress_and_write(input, "randomGen.dat")
+        Compression.decompress_and_write("randomGen.dat", "check.txt")
+        self.assertTrue(filecmp.cmp(input, "check.txt"))
+        if os.path.exists("randomGen.dat"):
+            os.remove("randomGen.dat")
+        if os.path.exists("check.txt"):
+            os.remove("check.txt")
+
+    def test_random_generated(self):
+        input = "Inputs/randomGenerated.txt"
+        Compression.compress_and_write(input, "randomGen.dat")
+        Compression.decompress_and_write("randomGen.dat", "check.txt")
+        self.assertTrue(filecmp.cmp(input, "check.txt"))
+        if os.path.exists("randomGen.dat"):
+            os.remove("randomGen.dat")
+        if os.path.exists("check.txt"):
+            os.remove("check.txt")
+
 
 
 if __name__ == '__main__':
