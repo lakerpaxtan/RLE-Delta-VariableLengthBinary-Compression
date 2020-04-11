@@ -31,13 +31,22 @@ class Compression:
         # Finding the three zero separation denotation
         zeroCount = 0
         splitIndex = None
+        prev = False
         for i, num in enumerate(intArr):
+
+            if num != 0:
+                zeroCount = 0
+
             if num == 0:
                 zeroCount += 1
 
             if zeroCount == 3:
                 splitIndex = i
                 break
+
+            prev = False
+
+
         timestampArr = intArr[0:i - 2]
         valueArr = intArr[i + 1:]
 
@@ -296,7 +305,7 @@ class IntegrationTests(unittest.TestCase):
 
     def test_encode_and_decode_RLE(self):
         deltaObject = DeltaConversion(
-            "C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/long.txt")
+            "C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/longRandom.txt")
         deltaObject.convert()
         RLE = RunLengthEncoder(deltaObject.valueList)
         RLE.write_to_file("testFile.dat")
@@ -307,7 +316,7 @@ class IntegrationTests(unittest.TestCase):
             os.remove("testFile.dat")
 
         deltaObject = DeltaConversion(
-            "C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/long.txt")
+            "C:/Users/Pax/PycharmProjects/RLE-Delta-VariableLengthBinary-Compression/TimeSeriesCompression/Inputs/longRandom.txt")
         deltaObject.convert()
         RLE = RunLengthEncoder(deltaObject.timestampList)
         RLE.write_to_file("testFile.dat")
@@ -389,8 +398,8 @@ class TestFullFiles(unittest.TestCase):
         if os.path.exists("check.txt"):
             os.remove("check.txt")
 
-    def test_long(self):
-        input = "Inputs/long.txt"
+    def test_long_random(self):
+        input = "Inputs/longRandom.txt"
         Compression.compress_and_write(input, "randomGen.dat")
         Compression.decompress_and_write("randomGen.dat", "check.txt")
         self.assertTrue(filecmp.cmp(input, "check.txt"))
