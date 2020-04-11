@@ -97,7 +97,7 @@ class DeltaConversion:
             for line in tempFile:
                 tempLine = line.rstrip()  # strip newline from line
                 # tempLine = tempLine[:-1]   # remove final char (comma)
-                splitList = tempLine.rsplit(", ")  # remove trailing whitespace and split
+                splitList = tempLine.rsplit(",")  # remove trailing whitespace and split
                 self.valueList.append(int(splitList[1]))  # append value
                 self.timestampList.append(int(splitList[0]))  # append timestamp
 
@@ -323,6 +323,10 @@ class IntegrationTests(unittest.TestCase):
         Compression.decompress_and_read("testFile.dat")
         if os.path.exists("testFile.dat"):
             os.remove("testFile.dat")
+
+    def test_full(self):
+        Compression.compress_and_write("Inputs/randomGenerated.txt", "randomGen.dat")
+        Compression.decompress_and_write("randomGen.dat", "writeHere.txt")
 
 
 class TestRunLengthEncoder(unittest.TestCase):

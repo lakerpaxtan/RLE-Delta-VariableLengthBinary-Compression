@@ -17,7 +17,7 @@ def main():
     compress = False
     if sys.argv[1] == "compress":
         compress = True
-    elif sys.argv[1] != "read":
+    elif sys.argv[1] != "decompress":
         print("invalid arguments")
         return
 
